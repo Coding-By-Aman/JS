@@ -51,3 +51,11 @@ body {
 input:focus, textarea:focus, select:focus{
     outline: none;
 }
+
+.hidden {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+}
