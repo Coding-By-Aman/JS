@@ -1,4 +1,7 @@
-console.log("Hello JS");
+ localStorage.setItem("theme", "light");
+
+const theme = document.getElementById('changeTheme')
+
 const app = document.getElementById('root')
 
 // const logo = document.createElement('img')
@@ -37,8 +40,6 @@ function searchForCountry() {
 }
 
 function loadData(request) {
-    var theme = document.getElementById('changeTheme')
-    theme.setAttribute('onclick', 'changeTheme()')
     request.onload = function () {
     document.getElementById("countries").innerHTML = "";
     // Begin accessing JSON data here
@@ -77,6 +78,13 @@ function loadData(request) {
         card.appendChild(region)
         card.appendChild(capital)
     })
+    if (localStorage.getItem("theme") == "light") {
+        changeTheme("light");
+        theme.setAttribute('onclick', 'changeTheme("dark")')
+    } else {
+        changeTheme("dark");
+        theme.setAttribute('onclick', 'changeTheme("light")')
+    }
     } else {
     const errorMessage = document.createElement('marquee')
     errorMessage.textContent = `Something's Wrong`
@@ -98,9 +106,6 @@ function filterByRegion(){
 }
 
 function countryInfo(country) {
-    var theme = document.getElementById('changeTheme')
-    theme.setAttribute('onclick', 'changeDetailedTheme()')
-    console.log(country.name)
     const back = document.getElementById('back')
     back.classList.remove("hidden")
     const countryDiv = document.getElementById('root')
@@ -159,8 +164,6 @@ function countryInfo(country) {
     aboutThis.appendChild(listRight)
     
     details.appendChild(aboutThis)
-
-    // console.log(country.borders[0])
     const borders = document.createElement("h5")
     borders.textContent = `Border Countries: `
     var borderCountries = []
@@ -175,32 +178,34 @@ function countryInfo(country) {
     request.open('GET', 'https://restcountries.eu/rest/v2/alpha/' + country.borders[i], true)
     request.onload = function () {
         var country = JSON.parse(this.response);
-        // console.log(response.name) 
-        // console.log(request.status)
-        // if (request.status >= 200 && request.status < 400) {
-            // borderCountries.push(response.name)
+      
             var displayBox = document.createElement("button");
             displayBox.setAttribute('class', 'borders')
+            displayBox.style.visibility = 'hidden';
             displayBox.innerHTML = country.name+ "  "
             displayBox.onclick = function(){
                 document.getElementById("root").innerHTML = ""
                 countryInfo(country)
             };
          borders.appendChild(displayBox)
-        // } else {
-            // console.log("NA")
-        // }
     }
     request.send()
     } 
    }    
-    details.appendChild(borders)
-    countryDiv.appendChild(details)
+    details.appendChild(borders);
+    countryDiv.appendChild(details);
+    if (localStorage.getItem("theme") == "light") {
+        changeDetailedTheme("light");
+        theme.setAttribute('onclick', 'changeDetailedTheme("dark")')
+    } else {
+        changeDetailedTheme("dark");
+        theme.setAttribute('onclick', 'changeDetailedTheme("light")')
+    }
 }
 
-function changeTheme(){
-    if (document.getElementById("moon").classList.contains('far')) {
-     document.getElementById("body-content").style.background="hsl(207, 26%, 17%)";
+function changeTheme(to_theme){
+    if (to_theme == "dark") {
+     document.getElementById("body").style.background="hsl(207, 26%, 17%)";
      document.getElementById("head-content").style.background="hsl(209, 23%, 22%)";
      document.getElementById("search-icon").style.background="hsl(209, 23%, 22%)";
      document.getElementById("search-text").style.background="hsl(209, 23%, 22%)";
@@ -219,9 +224,11 @@ function changeTheme(){
      }
      document.getElementById("moon").classList.remove('far');
      document.getElementById("moon").classList.add('fas'); 
+     localStorage.setItem("theme", "dark");
+     theme.setAttribute('onclick', 'changeTheme("light")');
    }
    else {
-     document.getElementById("body-content").style.background="hsl(0, 0%, 98%)";
+     document.getElementById("body").style.background="hsl(0, 0%, 98%)";
      document.getElementById("head-content").style.background="hsl(0, 0%, 100%)";
      document.getElementById("search-icon").style.background="hsl(0, 0%, 100%)";
      document.getElementById("search-text").style.background="hsl(0, 0%, 100%)";
@@ -240,12 +247,14 @@ function changeTheme(){
      }
      document.getElementById("moon").classList.remove('fas');
      document.getElementById("moon").classList.add('far'); 
+     localStorage.setItem("theme", "light");
+     theme.setAttribute('onclick', 'changeTheme("dark")');
    }
  }
 
- function changeDetailedTheme() {
-    if (document.getElementById("moon").classList.contains('far')) {
-        document.getElementById("body-content").style.background="hsl(207, 26%, 17%)";
+ function changeDetailedTheme(to_theme) {
+    if (to_theme == "dark") {
+        document.getElementById("body").style.background="hsl(207, 26%, 17%)";
         document.getElementById("head-content").style.background="hsl(209, 23%, 22%)";
         document.getElementById("root").style.color = "hsl(0, 0%, 100%)";
         document.getElementById("go-back").style.background="hsl(209, 23%, 22%)";
@@ -255,9 +264,20 @@ function changeTheme(){
         var ele = document.getElementsByClassName('text');
         for (var i = 0; i < ele.length; i++ ) {
         ele[i].style.color = "hsl(0, 0%, 100%)";
-        }  }
+        }
+        var ele = document.getElementsByClassName('borders');
+        setTimeout(function() {
+            for (var i = 0; i < ele.length; i++ ) {
+            ele[i].style.background = "hsl(209, 23%, 22%)";
+            ele[i].style.color = "hsl(0, 0%, 100%)";
+            ele[i].style.visibility = 'visible';
+            }
+        }, 500)
+        localStorage.setItem("theme", "dark");
+        theme.setAttribute('onclick', 'changeDetailedTheme("light")');
+    }
     else {
-        document.getElementById("body-content").style.background="hsl(0, 0%, 98%)";
+        document.getElementById("body").style.background="hsl(0, 0%, 98%)";
         document.getElementById("head-content").style.background="hsl(0, 0%, 100%)";
         document.getElementById("root").style.color = "hsl(200, 15%, 8%)";
         document.getElementById("go-back").style.background="hsl(0, 0%, 98%)";
@@ -268,5 +288,14 @@ function changeTheme(){
         for (var i = 0; i < ele.length; i++ ) {
         ele[i].style.color = "hsl(200, 15%, 8%)";
         }
+        var ele = document.getElementsByClassName('borders');
+        setTimeout(function() { 
+        for (var i = 0; i < ele.length; i++ ) {
+        ele[i].style.background = "hsl(0, 0%, 98%)";
+        ele[i].style.color = "hsl(200, 15%, 8%)";
+        ele[i].style.visibility = 'visible';
+        }}, 500)
+        localStorage.setItem("theme", "light");
+        theme.setAttribute('onclick', 'changeDetailedTheme("dark")');
       }
  }

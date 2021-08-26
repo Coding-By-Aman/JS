@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="app/scss/style.css">
 <title>Frontend Mentor | Rest Countries API</title>
 </head>
-<body>
+<body id="body">
 <div id="body-content">
     <header class="header">
         <nav class="flex flex-jc-sb header__content" id="head-content">
@@ -19,7 +19,7 @@
             </div>
             <div class="header__theme">
                 <i id="moon" class="far fa-moon text"></i>
-                <b style="cursor: pointer;" id = "changeTheme" onclick="changeTheme()" class="text">Dark Mode</b>
+                <b style="cursor: pointer;" id = "changeTheme" onclick="changeTheme('dark')" class="text">Dark Mode</b>
             </div>
         </nav>
 </header>
@@ -34,7 +34,7 @@
     <form class="search flex flex-jc-sb" action="">
         <div id="search-icon"><i class="fa fa-search" style="color: lightgray; margin: 12px;"></i></div>
         <div id="search-text"><input type="text" placeholder="  Search for a country..." id="search-input" 
-        style="font-size: 12px; margin: 12px; border: none; width: 230px; background: transparent;" onchange="searchForCountry()"></div>
+        style="font-size: 12px; margin: 12px; border: none; width: 230px; background: transparent;" onkeydown="searchForCountry()"></div>
     </form>
     <form action="/action_page.php" class="filter-form">
         <div id="filter-region"></div>

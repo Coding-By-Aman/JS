@@ -1,3 +1,8 @@
+// html, body{
+//     min-width: 100%;
+//     min-height: 100%;
+// }
+
 html {
     font-size: 100%;
     box-sizing: border-box;
@@ -14,6 +19,7 @@ body {
     line-height: 1.5;
     font-family: 'Nunito Sans', sans-serif;
     font-size: 14px;
+    // background-color: blue;
 }
 
 .flex {
