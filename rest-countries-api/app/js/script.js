@@ -6,93 +6,94 @@ container.setAttribute('class', 'container')
 container.setAttribute('id', 'countries')
 app.appendChild(container)
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function (event) {
     fetchAllCountries();
     filterByRegion();
 })
 
-function fetchAllCountries(){
+function fetchAllCountries() {
     var request = new XMLHttpRequest()
     request.open('GET', 'https://restcountries.eu/rest/v2/all', true)
     loadData(request);
-    request.send() 
+    request.send()
 }
 
 function searchForCountry() {
     let countryName = document.getElementById("search-input").value
     if (countryName == "" || countryName == null)
-    fetchAllCountries();
-    else{
-    var request = new XMLHttpRequest()
-    request.open('GET', 'https://restcountries.eu/rest/v2/name/'+ countryName, true)
-    loadData(request)
-    request.send()
+        fetchAllCountries();
+    else {
+        var request = new XMLHttpRequest()
+        request.open('GET', 'https://restcountries.eu/rest/v2/name/' + countryName, true)
+        loadData(request)
+        request.send()
     }
 }
 
 function loadData(request) {
     request.onload = function () {
-    document.getElementById("countries").innerHTML = "";
-    // Begin accessing JSON data here
-    var response = this.response;
-    if (this.response == "" || this.response == null)
-    fetchAllCountries();
-    else {
-    var data = JSON.parse(this.response)
-    if (request.status >= 200 && request.status < 400) {
-    data.forEach((country) => {
-        const card = document.createElement('div')
-        card.setAttribute('class', 'card')
-        card.onclick = function(){
-        document.getElementById("root").innerHTML = ""
-        countryInfo(country)
-        };
-        const h4 = document.createElement('h4')
-        h4.setAttribute('class', 'about')
-        h4.textContent = country.name
-        const img = document.createElement('img')
-        img.setAttribute('class', 'img')
-        img.src = country.flag
-        const population = document.createElement('h5')
-        population.textContent = `Population: ${country.population}`
-        const region = document.createElement('h5')
-        region.textContent = `Region: ${country.region}`
-        const capital = document.createElement('h5')
-        capital.textContent = `Capital: ${country.capital}`      
-        population.setAttribute('class', 'about')
-        region.setAttribute('class', 'about')
-        capital.setAttribute('class', 'about')
-        container.appendChild(card)
-        card.appendChild(img)
-        card.appendChild(h4)
-        card.appendChild(population)
-        card.appendChild(region)
-        card.appendChild(capital)
-    })
-    if (localStorage.getItem("theme") == "light") {
-        changeTheme("light");
-        theme.setAttribute('onclick', 'changeTheme("dark")')
-    } else {
-        changeTheme("dark");
-        theme.setAttribute('onclick', 'changeTheme("light")')
-    }
-    } else {
-    const errorMessage = document.createElement('marquee')
-    errorMessage.textContent = `Something's Wrong`
+        document.getElementById("countries").innerHTML = "";
+        // Begin accessing JSON data here
+        var response = this.response;
+        if (this.response == "" || this.response == null)
+            fetchAllCountries();
+        else {
+            var data = JSON.parse(this.response)
+            if (request.status >= 200 && request.status < 400) {
+                data.forEach((country) => {
+                    const card = document.createElement('div')
+                    card.setAttribute('class', 'card')
+                    card.onclick = function () {
+                        document.getElementById("root").innerHTML = ""
+                        countryInfo(country)
+                    };
+                    const h4 = document.createElement('h4')
+                    h4.setAttribute('class', 'about')
+                    h4.textContent = country.name
+                    const img = document.createElement('img')
+                    img.setAttribute('class', 'img')
+                    img.src = country.flag
+                    const population = document.createElement('h5')
+                    population.textContent = `Population: ${country.population}`
+                    const region = document.createElement('h5')
+                    region.textContent = `Region: ${country.region}`
+                    const capital = document.createElement('h5')
+                    capital.textContent = `Capital: ${country.capital}`
+                    population.setAttribute('class', 'about')
+                    region.setAttribute('class', 'about')
+                    capital.setAttribute('class', 'about')
+                    container.appendChild(card)
+                    card.appendChild(img)
+                    card.appendChild(h4)
+                    card.appendChild(population)
+                    card.appendChild(region)
+                    card.appendChild(capital)
+                })
+                if (localStorage.getItem("theme") == "light") {
+                    changeTheme("light");
+                    theme.setAttribute('onclick', 'changeTheme("dark")')
+                } else {
+                    changeTheme("dark");
+                    theme.setAttribute('onclick', 'changeTheme("light")')
+                }
+            } else {
+                const errorMessage = document.createElement('marquee')
+                errorMessage.textContent = `Something's Wrong`
+            }
         }
-    }}
+    }
 }
 
-function filterByRegion(){
+function filterByRegion() {
     let regionName = document.getElementById("region").value
     if (regionName == "" || regionName == null || regionName == "filter") {
-    fetchAllCountries();
+        fetchAllCountries();
     }
-    else{
-    var request = new XMLHttpRequest()
-    request.open('GET', 'https://restcountries.eu/rest/v2/region/'+ regionName, true)
-    loadData(request)
-    request.send()
+    else {
+        var request = new XMLHttpRequest()
+        request.open('GET', 'https://restcountries.eu/rest/v2/region/' + regionName, true)
+        loadData(request)
+        request.send()
     }
 }
 
@@ -112,8 +113,8 @@ function countryInfo(country) {
     h3.setAttribute('class', 'about')
     h3.textContent = country.name
     details.appendChild(h3)
-    
-    const aboutThis =  document.createElement('div')
+
+    const aboutThis = document.createElement('div')
     aboutThis.setAttribute('class', 'about-this')
 
     const listLeft = document.createElement("div")
@@ -153,36 +154,36 @@ function countryInfo(country) {
 
     aboutThis.appendChild(listLeft)
     aboutThis.appendChild(listRight)
-    
+
     details.appendChild(aboutThis)
     const borders = document.createElement("h5")
     borders.textContent = `Border Countries: `
     var borderCountries = []
-    if(country.borders.length == 0){
+    if (country.borders.length == 0) {
         var noBorders = document.createElement("b")
         noBorders.textContent = `N/A`
         borders.appendChild(noBorders)
     }
     else {
-    for (var i = 0; i < country.borders.length; i++ ) {    
-    var request = new XMLHttpRequest()
-    request.open('GET', 'https://restcountries.eu/rest/v2/alpha/' + country.borders[i], true)
-    request.onload = function () {
-        var country = JSON.parse(this.response);
-      
-            var displayBox = document.createElement("button");
-            displayBox.setAttribute('class', 'borders')
-            displayBox.style.visibility = 'hidden';
-            displayBox.innerHTML = country.name+ "  "
-            displayBox.onclick = function(){
-                document.getElementById("root").innerHTML = ""
-                countryInfo(country)
-            };
-         borders.appendChild(displayBox)
+        for (var i = 0; i < country.borders.length; i++) {
+            var request = new XMLHttpRequest()
+            request.open('GET', 'https://restcountries.eu/rest/v2/alpha/' + country.borders[i], true)
+            request.onload = function () {
+                var country = JSON.parse(this.response);
+
+                var displayBox = document.createElement("button");
+                displayBox.setAttribute('class', 'borders')
+                displayBox.style.visibility = 'hidden';
+                displayBox.innerHTML = country.name + "  "
+                displayBox.onclick = function () {
+                    document.getElementById("root").innerHTML = ""
+                    countryInfo(country)
+                };
+                borders.appendChild(displayBox)
+            }
+            request.send()
+        }
     }
-    request.send()
-    } 
-   }    
     details.appendChild(borders);
     countryDiv.appendChild(details);
     if (localStorage.getItem("theme") == "light") {
@@ -194,99 +195,100 @@ function countryInfo(country) {
     }
 }
 
-function changeTheme(to_theme){
+function changeTheme(to_theme) {
     if (to_theme == "dark") {
-     document.getElementById("body").style.background="hsl(207, 26%, 17%)";
-     document.getElementById("head-content").style.background="hsl(209, 23%, 22%)";
-     document.getElementById("search-icon").style.background="hsl(209, 23%, 22%)";
-     document.getElementById("search-text").style.background="hsl(209, 23%, 22%)";
-     document.getElementById("region").style.background="hsl(209, 23%, 22%)";
-     var ele = document.getElementsByClassName("card")
-     for (var i = 0; i < ele.length; i++ ) {
-         ele[i].style.background = "hsl(209, 23%, 22%)";
-     }
-     var ele = document.getElementsByClassName("about")
-     for (var i = 0; i < ele.length; i++ ) {
-         ele[i].style.color = "hsl(0, 0%, 100%)";
-     }
-     var ele = document.getElementsByClassName('text');
-     for (var i = 0; i < ele.length; i++ ) {
-     ele[i].style.color = "hsl(0, 0%, 100%)";
-     }
-     document.getElementById("moon").classList.remove('far');
-     document.getElementById("moon").classList.add('fas'); 
-     localStorage.setItem("theme", "dark");
-     theme.setAttribute('onclick', 'changeTheme("light")');
-   }
-   else {
-     document.getElementById("body").style.background="hsl(0, 0%, 98%)";
-     document.getElementById("head-content").style.background="hsl(0, 0%, 100%)";
-     document.getElementById("search-icon").style.background="hsl(0, 0%, 100%)";
-     document.getElementById("search-text").style.background="hsl(0, 0%, 100%)";
-     document.getElementById("region").style.background="hsl(0, 0%, 100%)";
-     var ele = document.getElementsByClassName("card")
-     for (var i = 0; i < ele.length; i++ ) {
-         ele[i].style.background = "hsl(0, 0%, 100%)";
-     }
-     var ele = document.getElementsByClassName("about")
-     for (var i = 0; i < ele.length; i++ ) {
-         ele[i].style.color = "hsl(200, 15%, 8%)";
-     }
-     var ele = document.getElementsByClassName('text');
-     for (var i = 0; i < ele.length; i++ ) {
-     ele[i].style.color = "hsl(200, 15%, 8%)";
-     }
-     document.getElementById("moon").classList.remove('fas');
-     document.getElementById("moon").classList.add('far'); 
-     localStorage.setItem("theme", "light");
-     theme.setAttribute('onclick', 'changeTheme("dark")');
-   }
- }
-
- function changeDetailedTheme(to_theme) {
-    if (to_theme == "dark") {
-        document.getElementById("body").style.background="hsl(207, 26%, 17%)";
-        document.getElementById("head-content").style.background="hsl(209, 23%, 22%)";
-        document.getElementById("root").style.color = "hsl(0, 0%, 100%)";
-        document.getElementById("go-back").style.background="hsl(209, 23%, 22%)";
-        document.getElementById("go-back").style.color="hsl(0, 0%, 100%)";
-        document.getElementById("moon").classList.remove('far');
-        document.getElementById("moon").classList.add('fas');  
+        document.getElementById("body").style.background = "hsl(207, 26%, 17%)";
+        document.getElementById("head-content").style.background = "hsl(209, 23%, 22%)";
+        document.getElementById("search-icon").style.background = "hsl(209, 23%, 22%)";
+        document.getElementById("search-text").style.background = "hsl(209, 23%, 22%)";
+        document.getElementById("region").style.background = "hsl(209, 23%, 22%)";
+        var ele = document.getElementsByClassName("card")
+        for (var i = 0; i < ele.length; i++) {
+            ele[i].style.background = "hsl(209, 23%, 22%)";
+        }
+        var ele = document.getElementsByClassName("about")
+        for (var i = 0; i < ele.length; i++) {
+            ele[i].style.color = "hsl(0, 0%, 100%)";
+        }
         var ele = document.getElementsByClassName('text');
-        for (var i = 0; i < ele.length; i++ ) {
-        ele[i].style.color = "hsl(0, 0%, 100%)";
+        for (var i = 0; i < ele.length; i++) {
+            ele[i].style.color = "hsl(0, 0%, 100%)";
+        }
+        document.getElementById("moon").classList.remove('far');
+        document.getElementById("moon").classList.add('fas');
+        localStorage.setItem("theme", "dark");
+        theme.setAttribute('onclick', 'changeTheme("light")');
+    }
+    else {
+        document.getElementById("body").style.background = "hsl(0, 0%, 98%)";
+        document.getElementById("head-content").style.background = "hsl(0, 0%, 100%)";
+        document.getElementById("search-icon").style.background = "hsl(0, 0%, 100%)";
+        document.getElementById("search-text").style.background = "hsl(0, 0%, 100%)";
+        document.getElementById("region").style.background = "hsl(0, 0%, 100%)";
+        var ele = document.getElementsByClassName("card")
+        for (var i = 0; i < ele.length; i++) {
+            ele[i].style.background = "hsl(0, 0%, 100%)";
+        }
+        var ele = document.getElementsByClassName("about")
+        for (var i = 0; i < ele.length; i++) {
+            ele[i].style.color = "hsl(200, 15%, 8%)";
+        }
+        var ele = document.getElementsByClassName('text');
+        for (var i = 0; i < ele.length; i++) {
+            ele[i].style.color = "hsl(200, 15%, 8%)";
+        }
+        document.getElementById("moon").classList.remove('fas');
+        document.getElementById("moon").classList.add('far');
+        localStorage.setItem("theme", "light");
+        theme.setAttribute('onclick', 'changeTheme("dark")');
+    }
+}
+
+function changeDetailedTheme(to_theme) {
+    if (to_theme == "dark") {
+        document.getElementById("body").style.background = "hsl(207, 26%, 17%)";
+        document.getElementById("head-content").style.background = "hsl(209, 23%, 22%)";
+        document.getElementById("root").style.color = "hsl(0, 0%, 100%)";
+        document.getElementById("go-back").style.background = "hsl(209, 23%, 22%)";
+        document.getElementById("go-back").style.color = "hsl(0, 0%, 100%)";
+        document.getElementById("moon").classList.remove('far');
+        document.getElementById("moon").classList.add('fas');
+        var ele = document.getElementsByClassName('text');
+        for (var i = 0; i < ele.length; i++) {
+            ele[i].style.color = "hsl(0, 0%, 100%)";
         }
         var ele = document.getElementsByClassName('borders');
-        setTimeout(function() {
-            for (var i = 0; i < ele.length; i++ ) {
-            ele[i].style.background = "hsl(209, 23%, 22%)";
-            ele[i].style.color = "hsl(0, 0%, 100%)";
-            ele[i].style.visibility = 'visible';
+        setTimeout(function () {
+            for (var i = 0; i < ele.length; i++) {
+                ele[i].style.background = "hsl(209, 23%, 22%)";
+                ele[i].style.color = "hsl(0, 0%, 100%)";
+                ele[i].style.visibility = 'visible';
             }
         }, 500)
         localStorage.setItem("theme", "dark");
         theme.setAttribute('onclick', 'changeDetailedTheme("light")');
     }
     else {
-        document.getElementById("body").style.background="hsl(0, 0%, 98%)";
-        document.getElementById("head-content").style.background="hsl(0, 0%, 100%)";
+        document.getElementById("body").style.background = "hsl(0, 0%, 98%)";
+        document.getElementById("head-content").style.background = "hsl(0, 0%, 100%)";
         document.getElementById("root").style.color = "hsl(200, 15%, 8%)";
-        document.getElementById("go-back").style.background="hsl(0, 0%, 98%)";
-        document.getElementById("go-back").style.color="hsl(209, 23%, 22%)";
+        document.getElementById("go-back").style.background = "hsl(0, 0%, 98%)";
+        document.getElementById("go-back").style.color = "hsl(209, 23%, 22%)";
         document.getElementById("moon").classList.remove('fas');
-        document.getElementById("moon").classList.add('far');  
+        document.getElementById("moon").classList.add('far');
         var ele = document.getElementsByClassName('text');
-        for (var i = 0; i < ele.length; i++ ) {
-        ele[i].style.color = "hsl(200, 15%, 8%)";
+        for (var i = 0; i < ele.length; i++) {
+            ele[i].style.color = "hsl(200, 15%, 8%)";
         }
         var ele = document.getElementsByClassName('borders');
-        setTimeout(function() { 
-        for (var i = 0; i < ele.length; i++ ) {
-        ele[i].style.background = "hsl(0, 0%, 98%)";
-        ele[i].style.color = "hsl(200, 15%, 8%)";
-        ele[i].style.visibility = 'visible';
-        }}, 500)
+        setTimeout(function () {
+            for (var i = 0; i < ele.length; i++) {
+                ele[i].style.background = "hsl(0, 0%, 98%)";
+                ele[i].style.color = "hsl(200, 15%, 8%)";
+                ele[i].style.visibility = 'visible';
+            }
+        }, 500)
         localStorage.setItem("theme", "light");
         theme.setAttribute('onclick', 'changeDetailedTheme("dark")');
-      }
- }
+    }
+}

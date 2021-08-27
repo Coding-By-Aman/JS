@@ -1,14 +1,11 @@
-// html, body{
-//     min-width: 100%;
-//     min-height: 100%;
-// }
-
 html {
     font-size: 100%;
     box-sizing: border-box;
 }
 
-*, *::before, *::after{
+*,
+*::before,
+*::after {
     box-sizing: inherit;
 }
 
@@ -17,7 +14,7 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.5;
-    font-family: 'Nunito Sans', sans-serif;
+    font-family: "Nunito Sans", sans-serif;
     font-size: 14px;
     // background-color: blue;
 }
@@ -28,11 +25,11 @@ body {
     &-jc-sb {
         justify-content: space-between;
     }
-    
+
     &-jc-c {
         justify-content: center;
     }
-    
+
     &-jc-fs {
         justify-content: flex-start;
     }
@@ -42,9 +39,9 @@ body {
     }
 
     &-fw-sb {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
     &-fw-sa {
@@ -54,7 +51,9 @@ body {
     }
 }
 
-input:focus, textarea:focus, select:focus{
+input:focus,
+textarea:focus,
+select:focus {
     outline: none;
 }
 
