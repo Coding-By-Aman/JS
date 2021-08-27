@@ -1,2 +1,0 @@
-# JS
-Working with Javascript.

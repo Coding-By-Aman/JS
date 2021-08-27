@@ -1,21 +1,12 @@
- localStorage.setItem("theme", "light");
-
+if (localStorage == "NULL") localStorage.setItem("theme", "light");
 const theme = document.getElementById('changeTheme')
-
 const app = document.getElementById('root')
-
-// const logo = document.createElement('img')
-// logo.src = 'logo.png'
-
 const container = document.createElement('div')
 container.setAttribute('class', 'container')
 container.setAttribute('id', 'countries')
-
-// app.appendChild(logo)
 app.appendChild(container)
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    // document.getElementById("header").innerHTML("header.html"); 
     fetchAllCountries();
     filterByRegion();
 })
